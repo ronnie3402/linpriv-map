@@ -1,10 +1,10 @@
 # linpriv-map 🗺️
 
-> A clean, fast, offline Linux Privilege Escalation Mapper for CTFs, Pentests & Learning.
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Platform](https://img.shields.io/badge/Platform-Linux-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
+> A clean, fast, offline Linux Privilege Escalation Mapper for CTFs, Pentests & Learning.
 
 ---
 
