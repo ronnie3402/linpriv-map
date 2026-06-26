@@ -29,9 +29,21 @@
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/linpriv-map.git
+# Clone the repository
+git clone [https://github.com/](https://github.com/)<YOUR_USERNAME>/linpriv-map.git
 cd linpriv-map
-pip3 install -r requirements.txt
+
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the tool
+python3 linpriv-map.py --help
 ```
 
 ---
@@ -109,14 +121,26 @@ These binaries run as root regardless of the calling user.
 ```bash
 find . -exec /bin/sh -p \; -quit
 ```
-## Reference:
+Reference: https://gtfobins.github.io/
 
-https://gtfobins.github.io/
-
-# 📊 SCAN SUMMARY
-
+📊 SCAN SUMMARY
+```
 [CRITICAL] SUID Binaries (2 findings)
 [CLEAN]    Sudo Rights
 [HIGH]     SSH Dir Perms (1 finding)
 
 [!] 2 CRITICAL vector(s) found — prioritize these!
+```
+---
+
+## ⚠️ Disclaimer
+
+> This tool is intended for **authorized penetration testing, CTF challenges, and educational purposes only**.  
+> Use only on systems you own or have explicit permission to test.  
+> The author is not responsible for any misuse.
+
+---
+
+## 👤 Author
+
+Made by **Rohit** 
