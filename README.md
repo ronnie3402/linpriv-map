@@ -140,7 +140,55 @@ Reference: https://gtfobins.github.io/
 > The author is not responsible for any misuse.
 
 ---
+## 🧠 Technical Learnings
 
-## 👤 Author
+Building `linpriv-map` taught me the following concepts hands-on:
 
-Made by **Rohit** 
+### 🐍 Python
+- Modular project architecture — separating concerns across `core/` and `checks/` packages
+- `argparse` — building professional CLI interfaces with flags, help text, and examples
+- `subprocess` — running shell commands from Python and capturing output safely
+- `colorama` — cross-platform terminal color output
+- `glob` — pattern matching for filesystem paths like `/home/*/.ssh/`
+- `io.StringIO` — capturing stdout output programmatically for report saving
+- `json` — reading and writing structured data for local GTFOBins reference and JSON reports
+- `os.path`, `os.access` — checking file existence, read/write permissions portably
+- Virtual environments — isolating project dependencies cleanly
+- Constants file pattern (`vectors.py`) — avoiding hardcoded strings, making code refactor-safe
+
+### 🔐 Linux Privilege Escalation
+- SUID/GUID binaries — how they work and why they are dangerous when set on powerful binaries
+- GTFOBins — how common Linux binaries like find, python, vim can be abused for privilege escalation
+- Sticky Bit — difference between dangerous world-writable dirs and properly protected ones
+- Sudo misconfigurations — NOPASSWD entries, dangerous binary combinations in sudoers
+- Cron job abuse — writable scripts called by root cron jobs, PATH hijacking via cron
+- Kernel version enumeration — identifying kernel for manual CVE research (DirtyCOW, DirtyPipe etc.)
+- Writable PATH hijacking — placing malicious binaries in writable $PATH directories
+- Linux Capabilities — cap_setuid, cap_sys_admin, cap_dac_override and their escalation potential
+- Environment variable abuse — LD_PRELOAD, LD_LIBRARY_PATH, PYTHONPATH injection techniques
+- NFS misconfigurations — no_root_squash and no_all_squash exploitation technique
+- Password file exposure — /etc/shadow readable, /etc/passwd writable, SSH private key access
+- Service exploitation — writable systemd service files and service binaries running as root
+- Port forwarding opportunities — localhost-only services accessible via SSH tunneling or socat
+- Dangerous group memberships — docker, lxd, shadow, disk, adm, video, staff group escalation paths
+- Weak file permissions — world-readable sensitive files, insecure SSH directory permissions
+
+### 🛠️ Tool Design
+- Why clean output matters — LinPEAS dumps everything, targeted tools are more useful
+- Offline-first design — storing GTFOBins data locally in JSON for air-gapped environments
+- Severity classification — CRITICAL vs HIGH vs INFO vs NOT FOUND and when to use each
+- Report generation — stripping ANSI color codes for clean plain text file output
+- Structured findings — returning standardized result dicts from every module for summary table
+- One-file-one-responsibility — each check module is fully independent and testable
+---
+## 📜 License
+
+This project is for educational and security analysis purposes only. 
+Licensed under the [MIT License](LICENSE).
+
+---
+
+## 👨‍💻 Author
+
+**Rohit** — Built for the cybersecurity community.
+*Copyright (c) 2026 Rohit (ronnie3402)*
