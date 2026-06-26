@@ -10,9 +10,7 @@
 
 ## 🔍 What is linpriv-map?
 
-`linpriv-map` is a lightweight alternative to LinPEAS.  
-Instead of dumping everything, it checks **15 specific privilege escalation vectors**,  
-shows **color-coded findings** and suggests **exact next steps** for each finding.
+`linpriv-map` is a lightweight alternative to LinPEAS. Instead of dumping everything, it checks **15 specific privilege escalation vectors**, shows **color-coded findings** and suggests **exact next steps** for each finding.
 
 ---
 
