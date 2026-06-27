@@ -209,7 +209,8 @@ def main():
 
     # --json: JSON report save karo
     if args.json:
-        save_json_report(results)
+        json_name = args.output if args.output else None
+        save_json_report(results, filename=json_name)
 
 
 if __name__ == "__main__":

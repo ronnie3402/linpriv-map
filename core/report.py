@@ -67,21 +67,30 @@ def save_text_report(captured_output: str, filename: str):
 # JSON Report
 # ─────────────────────────────────────────────
 
-def save_json_report(findings: list):
+def save_json_report(findings, filename=None):
     """
-    Findings ko JSON format mein scans/ folder mein save karta hai.
-    Filename: scans/YYYY-MM-DD_HH-MM-SS.json
+    Findings ko JSON format mein save karta hai.
+    - Agar filename diya hai to wo use hoga.
+    - Agar filename nahi diya to timestamp use hoga.
     """
     scans_dir = create_scan_directory()
 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename  = f"{timestamp}.json"
-    filepath  = os.path.join(scans_dir, filename)
+    # Filename handling
+    if filename:
+        # Agar .json extension nahi hai to add karo
+        if not filename.endswith(".json"):
+            filename = filename + ".json"
+    else:
+        # Fallback to timestamp
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"{timestamp}.json"
+
+    filepath = os.path.join(scans_dir, filename)
 
     report = {
         "tool"      : "linpriv-map",
         "version"   : "1.0",
-        "timestamp" : timestamp,
+        "timestamp" : datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "findings"  : findings
     }
 
