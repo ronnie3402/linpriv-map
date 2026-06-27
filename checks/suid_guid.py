@@ -9,18 +9,37 @@ from core.printer import (
 VECTOR_NAME = vectors.SUID_GUID
 
 EXPECTED_PATHS = {
-    "pkexec" : "/usr/bin/pkexec",
-    "mount"  : "/usr/bin/mount",
-    "umount" : "/usr/bin/umount",
-    "su"     : "/usr/bin/su",
-    "sudo"   : "/usr/bin/sudo",
-    "passwd" : "/usr/bin/passwd",
-    "newgrp" : "/usr/bin/newgrp",
-    "gpasswd": "/usr/bin/gpasswd",
-    "chsh"   : "/usr/bin/chsh",
-    "chfn"   : "/usr/bin/chfn",
-}
+    # Core Auth & User Management
+    "pkexec"  : "/usr/bin/pkexec",
+    "su"      : "/usr/bin/su",
+    "sudo"    : "/usr/bin/sudo",
+    "passwd"  : "/usr/bin/passwd",
+    "newgrp"  : "/usr/bin/newgrp",
+    "gpasswd" : "/usr/bin/gpasswd",
+    "chsh"    : "/usr/bin/chsh",
+    "chfn"    : "/usr/bin/chfn",
+    "chage"   : "/usr/bin/chage",
+    "expiry"  : "/usr/bin/expiry",
 
+    # File System & Mounting
+    "mount"       : "/usr/bin/mount",
+    "umount"      : "/usr/bin/umount",
+    "fusermount"  : "/usr/bin/fusermount",
+    "fusermount3" : "/usr/bin/fusermount3",
+
+    # Network, SSH & Cron
+    "ping"        : "/usr/bin/ping",
+    "ping6"       : "/usr/bin/ping6",
+    "ssh-keysign" : "/usr/lib/openssh/ssh-keysign",
+    "crontab"     : "/usr/bin/crontab",
+
+    # Background Daemons & Helpers
+    "unix_chkpwd"               : "/sbin/unix_chkpwd",
+    "polkit-agent-helper-1"     : "/usr/lib/polkit-1/polkit-agent-helper-1",
+    "dbus-daemon-launch-helper" : "/usr/lib/dbus-1.0/dbus-daemon-launch-helper",
+    "snap-confine"              : "/usr/lib/snapd/snap-confine",
+    "vmware-user-suid-wrapper"  : "/usr/bin/vmware-user-suid-wrapper"
+}
 
 def run() -> list:
     """
