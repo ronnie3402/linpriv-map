@@ -8,6 +8,8 @@ from core.printer import (
 
 VECTOR_NAME = vectors.WEAK_FILE_PERMS
 
+
+
 # Files jinki permissions check karni hain
 CRITICAL_FILES = {
     "/etc/passwd"          : "rw",
@@ -96,7 +98,16 @@ def _check_world_readable() -> list:
     # Filter out expected readable files
     SKIP = ["/etc/passwd", "/etc/group", "/etc/hostname",
             "/etc/hosts", "/etc/resolv.conf", "/etc/os-release"]
-    files = [f for f in files if f not in SKIP]
+    SENSITIVE_KEYWORDS = [
+        "shadow", "sudoers", "password", "passwd",
+        ".pem", ".key", ".bak", "secret",
+        "credential", "token", "id_rsa", "authorized_keys"
+    ]
+    files = [
+        f for f in files
+        if f not in SKIP
+        and any(kw in f.lower() for kw in SENSITIVE_KEYWORDS)
+    ]
 
     if not files:
         return []

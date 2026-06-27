@@ -25,7 +25,7 @@ DANGEROUS_SUDO_BINS = [
 def run() -> list:
     print_section(VECTOR_NAME)
 
-    raw = run_command("sudo -l 2>/dev/null")
+    raw = run_command("sudo -n -l 2>/dev/null")
 
     if not raw:
         print_not_found("Sudo Rights", {

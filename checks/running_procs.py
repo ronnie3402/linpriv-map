@@ -7,7 +7,8 @@ from core.printer import (
     print_info,
     print_not_found
 )
-
+import os
+current_pid = str(os.getpid())
 VECTOR_NAME = vectors.RUNNING_PROCS
 
 INTERESTING_PROCESSES = [
@@ -112,8 +113,11 @@ def _check_interesting_processes() -> list:
     found = set()
 
     for line in raw.splitlines():
+        if current_pid in line:
+            continue
+        if "linpriv-map" in line:
+            continue
         lower_line = line.lower()
-
         for proc in INTERESTING_PROCESSES:
             if proc.lower() in lower_line:
                 found.add(line.strip())

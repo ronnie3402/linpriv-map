@@ -11,7 +11,7 @@ from core.printer import (
     print_high,
     print_not_found
 )
-
+import getpass
 VECTOR_NAME = vectors.PASSWORD_FILES
 
 SENSITIVE_FILES = [
@@ -150,8 +150,12 @@ def _check_writable_sensitive_files() -> list:
 
     writable = []
 
+    current_user = getpass.getuser()
+
     for f in set(expanded_files):
         if file_exists(f) and is_writable(f):
+            if f"/home/{current_user}/" in f:
+                continue
             writable.append(f)
 
     if not writable:

@@ -1,5 +1,6 @@
 from core import vectors
 import os
+import re
 from core.utils import run_command, read_file, file_exists, is_writable
 from core.printer import (
     print_section, print_critical, print_high,
@@ -19,6 +20,14 @@ CRON_PATHS = [
     "/var/spool/cron/crontabs",
 ]
 
+
+IGNORE_PATHS = {
+    "/dev/null",
+    "/dev/stdout", 
+    "/dev/stderr",
+    "/dev/random",
+    "/dev/urandom"
+}
 
 def run() -> list:
     print_section(VECTOR_NAME)
@@ -53,6 +62,7 @@ def _check_system_crontab() -> list:
         if line.strip()
         and not line.strip().startswith("#")
         and len(line.strip()) > 5
+        and not re.match(r"^[A-Z_]+=.*", line.strip())
     ]
 
     if not jobs:
@@ -160,7 +170,12 @@ def _check_writable_cron_scripts() -> list:
             continue
         parts = line.split()
         for part in parts:
-            if part.startswith("/") and file_exists(part) and is_writable(part):
+            if (
+                part.startswith("/")
+                and part not in IGNORE_PATHS
+                and os.path.isfile(part)
+                and is_writable(part)
+            ):
                 writable.append(part)
 
     if not writable:

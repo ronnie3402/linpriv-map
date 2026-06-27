@@ -5,7 +5,7 @@ from core.printer import (
     print_section, print_critical, print_high,
     print_not_found
 )
-
+import getpass
 VECTOR_NAME = vectors.WRITABLE_PATHS
 
 
@@ -41,8 +41,18 @@ def _check_path_dirs() -> list:
 
     # Sirf Linux paths check karo
     writable_dirs = []
+    current_user = getpass.getuser()
+
+    SKIP_PATH_KEYWORDS = [
+        "venv",
+        f"/home/{current_user}/.local",
+        f"/home/{current_user}/bin",
+    ]
+
     for d in path_dirs:
         if not d.startswith("/"):
+            continue
+        if any(kw in d for kw in SKIP_PATH_KEYWORDS):
             continue
         if os.path.isdir(d) and is_writable(d):
             writable_dirs.append(d)
