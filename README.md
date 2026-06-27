@@ -5,6 +5,7 @@
 ![Platform](https://img.shields.io/badge/Platform-Linux-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
 > A clean, fast, offline Linux Privilege Escalation Mapper for CTFs, Pentests & Learning.
+<img width="1686" height="737" alt="asd" src="https://github.com/user-attachments/assets/43c34978-9df8-47f2-8912-6dff0944889d" />
 
 ---
 
@@ -112,7 +113,7 @@ python3 linpriv-map.py --help
 
 **Binaries:**
 1. `/usr/bin/find`  
-2. `/usr/bin/python3`
+
 
 **Risk:**  
 These binaries run as root regardless of the calling user.
@@ -125,7 +126,7 @@ Reference: https://gtfobins.github.io/
 
 📊 SCAN SUMMARY
 ```
-[CRITICAL] SUID Binaries (2 findings)
+[CRITICAL] SUID Binaries (1 findings)
 [CLEAN]    Sudo Rights
 [HIGH]     SSH Dir Perms (1 finding)
 
