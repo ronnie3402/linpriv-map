@@ -107,7 +107,7 @@ def _check_suid() -> list:
     if exploitable:
         print_critical("SUID Binaries Found", {
             "Binaries" : exploitable,
-            "Risk"     : "Executes with privileges of the file's group owner — may allow group-level escalation",
+            "Risk"     : "Executes with the privileges of the file's owner (typically root) — allows potential root access",
             "Next Step": "Check each binary below for exploit command",
             "Reference": "https://gtfobins.github.io/"
         })
@@ -204,7 +204,7 @@ def _check_guid() -> list:
     if exploitable:
         print_critical("GUID Binaries Found", {
             "Binaries" : exploitable,
-            "Risk"     : "Runs with group owner privileges — can abuse group access",
+            "Risk"     : "Executes with the privileges of the file's group owner — may allow group-level escalation or access to sensitive group resources",
             "Next Step": "Check each binary below for exploit command",
             "Reference": "https://gtfobins.github.io/"
         })
