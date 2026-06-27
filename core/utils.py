@@ -7,18 +7,18 @@ import json
 # ─────────────────────────────────────────────
 
 def run_command(cmd: str) -> str:
-    """
-    Shell command run karta hai aur output string mein return karta hai.
-    Koi bhi error pe empty string return karta hai.
-    """
     try:
-        result = subprocess.check_output(
+        result = subprocess.run(
             cmd,
             shell=True,
+            stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             timeout=60
         )
-        return result.decode("utf-8", errors="ignore").strip()
+        # Exit code ignore karo — sirf output chahiye
+        return result.stdout.decode("utf-8", errors="ignore").strip()
+    except subprocess.TimeoutExpired:
+        return ""
     except Exception:
         return ""
 
