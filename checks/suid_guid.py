@@ -122,9 +122,14 @@ def _check_suid() -> list:
             })
 
     if normal:
-        print_info("SUID Binaries (Not Exploitable / Unverified)", {
-            "Binaries": normal
-        })
+        display = normal[:10]
+        remaining = len(normal) - 10
+        
+        fields = {"Binaries": display}
+        if remaining > 0:
+            fields["Note"] = f"...and {remaining} more (use --verbose to see all)"
+        
+        print_info("SUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
         print_not_found("SUID Binaries", {
@@ -202,9 +207,14 @@ def _check_guid() -> list:
             })
 
     if normal:
-        print_info("GUID Binaries (Not Exploitable / Unverified)", {
-            "Binaries": normal
-        })
+        display = normal[:10]
+        remaining = len(normal) - 10
+        
+        fields = {"Binaries": display}
+        if remaining > 0:
+            fields["Note"] = f"...and {remaining} more (use --verbose to see all)"
+        
+        print_info("GUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
         print_not_found("GUID Binaries", {

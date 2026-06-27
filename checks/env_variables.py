@@ -135,7 +135,7 @@ def _check_sudo_env() -> list:
     Agar LD_PRELOAD ya LD_LIBRARY_PATH preserved hai sudo ke saath
     toh direct privesc possible hai.
     """
-    raw = run_command("sudo -l 2>/dev/null")
+    raw = run_command("sudo -n -l 2>/dev/null")
 
     if not raw:
         return []

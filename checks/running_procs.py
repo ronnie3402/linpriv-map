@@ -12,31 +12,12 @@ current_pid = str(os.getpid())
 VECTOR_NAME = vectors.RUNNING_PROCS
 
 INTERESTING_PROCESSES = [
-    "mysql",
-    "mysqld",
-    "postgres",
-    "postgresql",
-    "mongod",
-    "redis",
-    "docker",
-    "containerd",
-    "nginx",
-    "apache2",
-    "httpd",
-    "tomcat",
-    "java",
-    "python",
-    "python3",
-    "node",
-    "php",
-    "ruby",
-    "perl",
-    "screen",
-    "tmux",
-    "ansible",
-    "jenkins",
-    "salt",
-    "supervisord"
+    "mysqld", "postgres", "postgresql", "mongod",
+    "redis-server", "docker", "containerd",
+    "apache2", "httpd", "nginx", "tomcat",
+    "java", "jenkins", "ansible", "salt",
+    "supervisord", "screen", "tmux",
+    "puppet", "chef"
 ]
 
 
@@ -76,8 +57,15 @@ def _check_root_processes() -> list:
     root_processes = []
 
     for line in raw.splitlines()[1:]:
-        if line.startswith("root "):
-            root_processes.append(line)
+        if not line.startswith("root"):
+            continue
+        # Kernel threads skip karo — [kworker], [migration] etc
+        parts = line.split()
+        if len(parts) >= 11:
+            cmd = parts[10]
+            if cmd.startswith("[") and cmd.endswith("]"):
+                continue
+        root_processes.append(line)
 
     if not root_processes:
         return []

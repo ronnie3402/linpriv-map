@@ -96,8 +96,15 @@ def _check_world_readable() -> list:
     files = [f.strip() for f in raw.splitlines() if f.strip()]
 
     # Filter out expected readable files
-    SKIP = ["/etc/passwd", "/etc/group", "/etc/hostname",
-            "/etc/hosts", "/etc/resolv.conf", "/etc/os-release"]
+    SKIP_DIRS = [
+        "/etc/pam.d/",
+        "/etc/pki/",
+        "/etc/ssl/certs/",
+        "/etc/init.d/",
+        "/usr/share/",
+        "/etc/apparmor.d/",
+        "/etc/xdg/",
+    ]
     SENSITIVE_KEYWORDS = [
         "shadow", "sudoers", "password", "passwd",
         ".pem", ".key", ".bak", "secret",
@@ -105,7 +112,8 @@ def _check_world_readable() -> list:
     ]
     files = [
         f for f in files
-        if f not in SKIP
+        if f not in SKIP_DIRS
+        and not any(f.startswith(d) for d in SKIP_DIRS)
         and any(kw in f.lower() for kw in SENSITIVE_KEYWORDS)
     ]
 
