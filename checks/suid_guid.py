@@ -8,6 +8,19 @@ from core.printer import (
 
 VECTOR_NAME = vectors.SUID_GUID
 
+EXPECTED_PATHS = {
+    "pkexec" : "/usr/bin/pkexec",
+    "mount"  : "/usr/bin/mount",
+    "umount" : "/usr/bin/umount",
+    "su"     : "/usr/bin/su",
+    "sudo"   : "/usr/bin/sudo",
+    "passwd" : "/usr/bin/passwd",
+    "newgrp" : "/usr/bin/newgrp",
+    "gpasswd": "/usr/bin/gpasswd",
+    "chsh"   : "/usr/bin/chsh",
+    "chfn"   : "/usr/bin/chfn",
+}
+
 
 def run() -> list:
     """
@@ -44,6 +57,25 @@ def _check_suid() -> list:
     hints       = {}
 
     for binary in binaries:
+        binary_name = os.path.basename(binary).lower()
+
+        # Expected path check — agar expected path par hai toh normal
+        if binary_name in EXPECTED_PATHS:
+            if binary == EXPECTED_PATHS[binary_name]:
+                normal.append(f"{binary}  (expected SUID — not exploitable)")
+                continue
+            else:
+                # Unexpected path par mila — CRITICAL
+                exploitable.append(binary)
+                hints[binary] = {
+                    "exploitable": True,
+                    "risk": f"'{binary_name}' found at unexpected path — possible backdoor or hijack",
+                    "command": f"Investigate: ls -la {binary} && file {binary}",
+                    "reference": "https://book.hacktricks.xyz/linux-hardening/privilege-escalation"
+                }
+                continue
+
+        # Normal GTFOBins lookup
         info = gtfo_lookup(binary, "suid")
         if info is None:
             normal.append(f"{binary}  (not in GTFOBins — verify manually)")
@@ -106,6 +138,25 @@ def _check_guid() -> list:
     hints       = {}
 
     for binary in binaries:
+        binary_name = os.path.basename(binary).lower()
+
+        # Expected path check — agar expected path par hai toh normal
+        if binary_name in EXPECTED_PATHS:
+            if binary == EXPECTED_PATHS[binary_name]:
+                normal.append(f"{binary}  (expected GUID — not exploitable)")
+                continue
+            else:
+                # Unexpected path par mila — CRITICAL
+                exploitable.append(binary)
+                hints[binary] = {
+                    "exploitable": True,
+                    "risk": f"'{binary_name}' found at unexpected path — possible backdoor or hijack",
+                    "command": f"Investigate: ls -la {binary} && file {binary}",
+                    "reference": "https://book.hacktricks.xyz/linux-hardening/privilege-escalation"
+                }
+                continue
+
+        # Normal GTFOBins lookup
         info = gtfo_lookup(binary, "guid")
         if info is None:
             normal.append(f"{binary}  (not in GTFOBins — verify manually)")
