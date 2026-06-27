@@ -236,7 +236,7 @@ def _check_guid() -> list:
         if remaining > 0:
             fields["Note"] = f"...and {remaining} more (use --verbose to see all)"
         
-        print_info("SGUID Binaries (Not Exploitable / Unverified)", fields)
+        print_info("GUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
         print_not_found("SGID Binaries", {
