@@ -34,7 +34,7 @@ EXPECTED_PATHS = {
     "crontab"     : "/usr/bin/crontab",
 
     # Background Daemons & Helpers
-    "unix_chkpwd"               : "/sbin/unix_chkpwd",
+    "unix_chkpwd"               : "/usr/sbin/unix_chkpwd",
     "polkit-agent-helper-1"     : "/usr/lib/polkit-1/polkit-agent-helper-1",
     "dbus-daemon-launch-helper" : "/usr/lib/dbus-1.0/dbus-daemon-launch-helper",
     "snap-confine"              : "/usr/lib/snapd/snap-confine",
