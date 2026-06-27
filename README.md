@@ -30,7 +30,7 @@
 
 ```bash
 # Clone the repository
-git clone [https://github.com/](https://github.com/)<YOUR_USERNAME>/linpriv-map.git
+git clone https://github.com/ronnie3402/linpriv-map.git
 cd linpriv-map
 
 # Create a virtual environment
