@@ -67,7 +67,7 @@ def _check_suid() -> list:
     if not binaries:
         print_not_found("SGID Binaries", {
             "Checked": "find / -perm -4000 -type f",
-            "Result" : "No SGID binaries found"
+            "Result" : "No SUID binaries found"
         })
         return [{"vector": "SUID Binaries", "severity": "CLEAN", "count": 0}]
 
@@ -105,7 +105,7 @@ def _check_suid() -> list:
             normal.append(f"{binary}  (expected SUID — not exploitable)")
 
     if exploitable:
-        print_critical("SGID Binaries Found", {
+        print_critical("SUID Binaries Found", {
             "Binaries" : exploitable,
             "Risk"     : "Executes with privileges of the file's group owner — may allow group-level escalation",
             "Next Step": "Check each binary below for exploit command",
@@ -145,7 +145,7 @@ def _check_suid() -> list:
     if not exploitable and not normal:
         print_not_found("SGID Binaries", {
             "Checked": "find / -perm -4000 -type f",
-            "Result" : "No SGID binaries found"
+            "Result" : "No SUID binaries found"
         })
 
     count    = len(exploitable)
@@ -202,7 +202,7 @@ def _check_guid() -> list:
             normal.append(f"{binary}  (expected SGID — not exploitable)")
 
     if exploitable:
-        print_critical("SGID Binaries Found", {
+        print_critical("GUID Binaries Found", {
             "Binaries" : exploitable,
             "Risk"     : "Runs with group owner privileges — can abuse group access",
             "Next Step": "Check each binary below for exploit command",
@@ -241,7 +241,7 @@ def _check_guid() -> list:
     if not exploitable and not normal:
         print_not_found("SGID Binaries", {
             "Checked": "find / -perm -2000 -type f",
-            "Result" : "No SGID binaries found"
+            "Result" : "No GUID binaries found"
         })
 
     count    = len(exploitable)
