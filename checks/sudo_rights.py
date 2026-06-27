@@ -28,9 +28,19 @@ def run() -> list:
     raw = run_command("sudo -n -l 2>/dev/null")
 
     if not raw:
+    # Sudo group mein hai ya nahi check karo
+        groups_raw = run_command("id")
+        if "sudo" in groups_raw or "wheel" in groups_raw:
+            print_high("Sudo Group Member — Password Required", {
+                "Result"   : "User is in sudo group but passwordless access not confirmed",
+                "Next Step": "Try manually: sudo -l (enter password when prompted)",
+                "Reference": "https://book.hacktricks.xyz/linux-hardening/privilege-escalation"
+            })
+            return [{"vector": vectors.SUDO_RIGHTS, "severity": "HIGH", "count": 1}]
+
         print_not_found("Sudo Rights", {
-            "Checked": "sudo -l",
-            "Result" : "No sudo rights found or sudo not available"
+            "Checked": "sudo -n -l",
+            "Result" : "No passwordless sudo rights found"
         })
         return [{"vector": vectors.SUDO_RIGHTS, "severity": "CLEAN", "count": 0}]
 

@@ -10,20 +10,57 @@ from core.printer import (
 import os
 current_pid = str(os.getpid())
 VECTOR_NAME = vectors.RUNNING_PROCS
-
+MAX_ROOT_DISPLAY = 25
 INTERESTING_PROCESSES = [
     "mysqld", "postgres", "postgresql", "mongod",
     "redis-server", "docker", "containerd",
     "apache2", "httpd", "nginx", "tomcat",
     "java", "jenkins", "ansible",
     "salt-minion", "supervisord",
-    "screen", "tmux", "kubectl"
-]
+    "screen", "tmux", "kubectl",
 
+    # additional
+    "consul",
+    "vault",
+    "nomad",
+    "etcd",
+    "rabbitmq",
+    "memcached",
+    "elasticsearch",
+    "grafana",
+    "prometheus",
+    "gitlab",
+    "gitlab-runner",
+    "teamcity",
+    "rundeck"
+]
 GUI_SKIP = [
     "gsd-", "gjs", "gnome", "kde", "plasma",
     "blueman", "screensaver", "applet", "xorg",
-    "wayland", "dbus", "pulseaudio", "pipewire"
+    "wayland", "dbus", "pulseaudio", "pipewire",
+    "gdm", "gvfs", "tracker", "evolution",
+    "nautilus", "gedit", "firefox", "chromium","xdg-desktop",
+    "xdg-document",
+    "xdg-permission",
+    "ibus",
+    "at-spi",
+    "xdg-portal",
+    "wireplumber",
+    "snap-store"
+]
+
+CRITICAL_PROCESSES = [
+    "docker",
+    "containerd",
+    "jenkins",
+    "gitlab-runner",
+    "ansible",
+    "salt-minion",
+    "vault",
+    "consul",
+    "nomad",
+    "teamcity",
+    "rundeck"
 ]
 
 def run() -> list:
@@ -62,7 +99,9 @@ def _check_root_processes() -> list:
     root_processes = []
 
     for line in raw.splitlines()[1:]:
-        if not line.startswith("root"):
+        parts = line.split()
+
+        if not parts or parts[0] != "root":
             continue
         # Kernel threads skip karo — [kworker], [migration] etc
         parts = line.split()
@@ -76,9 +115,9 @@ def _check_root_processes() -> list:
         return []
 
     print_info("Processes Running as Root", {
-        "Processes": root_processes[:25],
+        "Processes": root_processes[:MAX_ROOT_DISPLAY],
         "Result": (
-            f"Showing first {min(len(root_processes), 25)} "
+            f"Showing first {min(len(root_processes), MAX_ROOT_DISPLAY)} "
             f"of {len(root_processes)} root processes"
         ),
         "Next Step": (
@@ -106,17 +145,32 @@ def _check_interesting_processes() -> list:
     found = set()
 
     for line in raw.splitlines():
-        if current_pid in line:
-            continue
-        if "linpriv-map" in line:
+        parts = line.split()
+
+        if len(parts) > 1:
+            pid = parts[1]
+            if pid == current_pid:
+                continue
+        if "linpriv-map" in line.lower():
             continue
         # GUI skip
-        if any(kw in line.lower() for kw in GUI_SKIP):
+        parts = line.split()
+
+        if len(parts) < 11:
             continue
-        lower_line = line.lower()
+
+        cmd = " ".join(parts[10:]).lower()
+
+        if any(gui_proc in cmd for gui_proc in GUI_SKIP):
+            continue
         for proc in INTERESTING_PROCESSES:
-            if proc.lower() in lower_line:
+            if (
+                f"/{proc}" in cmd or
+                f" {proc} " in f" {cmd} " or
+                cmd.startswith(proc)
+            ):
                 found.add(line.strip())
+                break
 
 
     if not found:
@@ -124,11 +178,15 @@ def _check_interesting_processes() -> list:
 
     severity = "HIGH"
 
-    if any(
-        x in " ".join(found).lower()
-        for x in ["docker", "containerd", "jenkins"]
-    ):
-        severity = "CRITICAL"
+    for proc_line in found:
+        lower_proc = proc_line.lower()
+
+        if any(
+            critical in lower_proc
+            for critical in CRITICAL_PROCESSES
+        ):
+            severity = "CRITICAL"
+            break
 
     printer = print_critical if severity == "CRITICAL" else print_high
 

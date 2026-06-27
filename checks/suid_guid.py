@@ -107,15 +107,26 @@ def _check_suid() -> list:
     if exploitable:
         print_critical("SGID Binaries Found", {
             "Binaries" : exploitable,
-            "Risk"     : "These binaries run as root regardless of calling user",
+            "Risk"     : "Executes with privileges of the file's group owner — may allow group-level escalation",
             "Next Step": "Check each binary below for exploit command",
             "Reference": "https://gtfobins.github.io/"
         })
         # Har exploitable binary ka alag hint
         for binary in exploitable:
             hint = hints[binary]
+            try:
+                import stat
+                st = os.stat(binary)
+                mode = oct(st.st_mode)[-4:]
+                owner = "root" if st.st_uid == 0 else str(st.st_uid)
+            except Exception:
+                mode = "unknown"
+                owner = "unknown"
+
             print_critical(f"Exploit → {os.path.basename(binary)}", {
                 "Binary"   : binary,
+                "Owner"    : owner,
+                "Mode"     : mode,
                 "Risk"     : hint.get("risk", ""),
                 "Command"  : hint.get("command", "See reference"),
                 "Reference": hint.get("reference", "https://gtfobins.github.io/")
@@ -199,8 +210,19 @@ def _check_guid() -> list:
         })
         for binary in exploitable:
             hint = hints[binary]
+            try:
+                import stat
+                st = os.stat(binary)
+                mode = oct(st.st_mode)[-4:]
+                owner = "root" if st.st_uid == 0 else str(st.st_uid)
+            except Exception:
+                mode = "unknown"
+                owner = "unknown"
+
             print_critical(f"Exploit → {os.path.basename(binary)}", {
                 "Binary"   : binary,
+                "Owner"    : owner,
+                "Mode"     : mode,
                 "Risk"     : hint.get("risk", ""),
                 "Command"  : hint.get("command", "See reference"),
                 "Reference": hint.get("reference", "https://gtfobins.github.io/")
