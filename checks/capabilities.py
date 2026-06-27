@@ -26,8 +26,24 @@ MODERATE_CAPS = {
     "cap_net_raw": "Can create raw sockets — network sniffing/spoofing",
     "cap_net_bind_service": "Can bind to privileged ports (<1024)",
     "cap_sys_nice": "Can modify process priorities",
-    "cap_wake_alarm": "Can trigger wake alarms"
+    "cap_wake_alarm": "Can trigger wake alarms",
+    "cap_net_admin": (
+        "Can modify network interfaces, firewall rules, routing tables "
+        "and perform advanced network administration tasks"
+    ),
 }
+
+EXPECTED_CAP_BINARIES = [
+    "dumpcap",
+    "fping",
+    "gst-ptp-helper",
+    "org_kde_powerdevil",
+    "kwin_wayland",
+    "ksgrd_network_helper",
+    "ping",
+    "ping6"
+]
+
 
 # GTFOBins capable binaries
 EXPLOITABLE_CAP_BINARIES = {
@@ -142,11 +158,19 @@ def run() -> list:
             })
 
         elif moderate_matches:
-            moderate_found.append({
-                "binary": binary,
-                "caps": caps,
-                "reasons": moderate_matches
-            })
+
+            if binary_name in EXPECTED_CAP_BINARIES:
+                info_found.append(
+                    f"{binary} ({caps}) "
+                    "[expected capability assignment]"
+                )
+
+            else:
+                moderate_found.append({
+                    "binary": binary,
+                    "caps": caps,
+                    "reasons": moderate_matches
+                })
 
         else:
             info_found.append(line)
@@ -243,3 +267,9 @@ def run() -> list:
     else:
         severity = "CLEAN"
         count = 0
+
+    return [{
+        "vector": vectors.CAPABILITIES,
+        "severity": severity,
+        "count": count
+    }]
