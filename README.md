@@ -132,6 +132,9 @@ Reference: https://gtfobins.github.io/
 
 [!] 2 CRITICAL vector(s) found — prioritize these!
 ```
+<img width="1682" height="841" alt="out1" src="https://github.com/user-attachments/assets/0ef228f4-cd01-42c8-8213-aa727f9a5c9a" />
+
+
 ---
 
 ## ⚠️ Disclaimer
