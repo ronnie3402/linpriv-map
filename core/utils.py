@@ -16,7 +16,7 @@ def run_command(cmd: str) -> str:
             cmd,
             shell=True,
             stderr=subprocess.DEVNULL,
-            timeout=10
+            timeout=60
         )
         return result.decode("utf-8", errors="ignore").strip()
     except Exception:
