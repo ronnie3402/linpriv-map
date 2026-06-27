@@ -65,9 +65,9 @@ def _check_suid() -> list:
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
 
     if not binaries:
-        print_not_found("SUID Binaries", {
+        print_not_found("SGID Binaries", {
             "Checked": "find / -perm -4000 -type f",
-            "Result" : "No SUID binaries found"
+            "Result" : "No SGID binaries found"
         })
         return [{"vector": "SUID Binaries", "severity": "CLEAN", "count": 0}]
 
@@ -105,7 +105,7 @@ def _check_suid() -> list:
             normal.append(f"{binary}  (expected SUID — not exploitable)")
 
     if exploitable:
-        print_critical("SUID Binaries Found", {
+        print_critical("SGID Binaries Found", {
             "Binaries" : exploitable,
             "Risk"     : "These binaries run as root regardless of calling user",
             "Next Step": "Check each binary below for exploit command",
@@ -132,9 +132,9 @@ def _check_suid() -> list:
         print_info("SUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
-        print_not_found("SUID Binaries", {
+        print_not_found("SGID Binaries", {
             "Checked": "find / -perm -4000 -type f",
-            "Result" : "No SUID binaries found"
+            "Result" : "No SGID binaries found"
         })
 
     count    = len(exploitable)
@@ -143,7 +143,7 @@ def _check_suid() -> list:
 
 
 # ─────────────────────────────────────────────
-# GUID Check
+# SGID Check
 # ─────────────────────────────────────────────
 
 def _check_guid() -> list:
@@ -151,11 +151,11 @@ def _check_guid() -> list:
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
 
     if not binaries:
-        print_not_found("GUID Binaries", {
+        print_not_found("SGID Binaries", {
             "Checked": "find / -perm -2000 -type f",
             "Result" : "No GUID binaries found"
         })
-        return [{"vector": "GUID Binaries", "severity": "CLEAN", "count": 0}]
+        return [{"vector": "SGID Binaries", "severity": "CLEAN", "count": 0}]
 
     exploitable = []
     normal      = []
@@ -167,7 +167,7 @@ def _check_guid() -> list:
         # Expected path check — agar expected path par hai toh normal
         if binary_name in EXPECTED_PATHS:
             if binary == EXPECTED_PATHS[binary_name]:
-                normal.append(f"{binary}  (expected GUID — not exploitable)")
+                normal.append(f"{binary}  (expected SGID — not exploitable)")
                 continue
             else:
                 # Unexpected path par mila — CRITICAL
@@ -188,10 +188,10 @@ def _check_guid() -> list:
             exploitable.append(binary)
             hints[binary] = info
         else:
-            normal.append(f"{binary}  (expected GUID — not exploitable)")
+            normal.append(f"{binary}  (expected SGID — not exploitable)")
 
     if exploitable:
-        print_critical("GUID Binaries Found", {
+        print_critical("SGID Binaries Found", {
             "Binaries" : exploitable,
             "Risk"     : "Runs with group owner privileges — can abuse group access",
             "Next Step": "Check each binary below for exploit command",
@@ -214,17 +214,17 @@ def _check_guid() -> list:
         if remaining > 0:
             fields["Note"] = f"...and {remaining} more (use --verbose to see all)"
         
-        print_info("GUID Binaries (Not Exploitable / Unverified)", fields)
+        print_info("SGID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
-        print_not_found("GUID Binaries", {
+        print_not_found("SGID Binaries", {
             "Checked": "find / -perm -2000 -type f",
-            "Result" : "No GUID binaries found"
+            "Result" : "No SGID binaries found"
         })
 
     count    = len(exploitable)
     severity = "CRITICAL" if count > 0 else "CLEAN"
-    return [{"vector": "GUID Binaries", "severity": severity, "count": count}]
+    return [{"vector": "SGID Binaries", "severity": severity, "count": count}]
 
 
 # ─────────────────────────────────────────────

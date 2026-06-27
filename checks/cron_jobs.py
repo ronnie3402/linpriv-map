@@ -81,7 +81,7 @@ def _check_system_crontab() -> list:
 
     print_info("/etc/crontab — Cron Jobs Found", {
         "Jobs"  : jobs,
-        "Result": "No root cron jobs detected — review manually"
+        "Result": "Default system cron jobs — verify scripts and permissions manually"
     })
     return [{"vector": "Crontab", "severity": "INFO", "count": len(jobs)}]
 

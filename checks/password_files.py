@@ -1,4 +1,5 @@
 from glob import glob
+import os
 from core import vectors
 from core.utils import (
     file_exists,
@@ -86,7 +87,7 @@ def _check_shadow_file() -> list:
 
 def _check_sensitive_files() -> list:
     expanded_files = []
-
+    current_uid = os.getuid()
     for pattern in SENSITIVE_FILES:
         if "*" in pattern:
             expanded_files.extend(glob(pattern))
@@ -94,10 +95,17 @@ def _check_sensitive_files() -> list:
             expanded_files.append(pattern)
 
     readable = []
-
     for f in set(expanded_files):
-        if file_exists(f) and is_readable(f):
-            readable.append(f)
+        if not file_exists(f) or not is_readable(f):
+            continue
+        # Agar file ka owner current user hai toh skip karo
+        try:
+            file_uid = os.stat(f).st_uid
+            if file_uid == current_uid:
+                continue
+        except Exception:
+            pass
+        readable.append(f)
 
     # /etc/shadow already handled separately
     readable = [f for f in readable if f != "/etc/shadow"]
@@ -150,12 +158,18 @@ def _check_writable_sensitive_files() -> list:
 
     writable = []
 
-    current_user = getpass.getuser()
+    
+    current_uid = os.getuid()
 
     for f in set(expanded_files):
         if file_exists(f) and is_writable(f):
-            if f"/home/{current_user}/" in f:
-                continue
+            try:
+                file_uid = os.stat(f).st_uid
+                if file_uid == current_uid:
+                    continue
+            except Exception:
+                pass
+
             writable.append(f)
 
     if not writable:

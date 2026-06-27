@@ -15,11 +15,16 @@ INTERESTING_PROCESSES = [
     "mysqld", "postgres", "postgresql", "mongod",
     "redis-server", "docker", "containerd",
     "apache2", "httpd", "nginx", "tomcat",
-    "java", "jenkins", "ansible", "salt",
-    "supervisord", "screen", "tmux",
-    "puppet", "chef"
+    "java", "jenkins", "ansible",
+    "salt-minion", "supervisord",
+    "screen", "tmux", "kubectl"
 ]
 
+GUI_SKIP = [
+    "gsd-", "gjs", "gnome", "kde", "plasma",
+    "blueman", "screensaver", "applet", "xorg",
+    "wayland", "dbus", "pulseaudio", "pipewire"
+]
 
 def run() -> list:
     print_section(VECTOR_NAME)
@@ -105,10 +110,14 @@ def _check_interesting_processes() -> list:
             continue
         if "linpriv-map" in line:
             continue
+        # GUI skip
+        if any(kw in line.lower() for kw in GUI_SKIP):
+            continue
         lower_line = line.lower()
         for proc in INTERESTING_PROCESSES:
             if proc.lower() in lower_line:
                 found.add(line.strip())
+
 
     if not found:
         return []

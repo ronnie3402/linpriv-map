@@ -81,7 +81,13 @@ def run() -> list:
             "Next Step": "Verify each on GTFOBins — may still be abusable",
             "Reference": "https://gtfobins.github.io/"
         })
+    
+    
 
-    count    = len(dangerous_found)
-    severity = "CRITICAL" if count > 0 else "CLEAN"
-    return [{"vector": "Capabilities", "severity": severity, "count": count}]
+    
+    if dangerous_found:
+        return [{"vector": vectors.CAPABILITIES, "severity": "CRITICAL", "count": len(dangerous_found)}]
+    elif info_found:
+        return [{"vector": vectors.CAPABILITIES, "severity": "INFO", "count": len(info_found)}]
+    else:
+        return [{"vector": vectors.CAPABILITIES, "severity": "CLEAN", "count": 0}]

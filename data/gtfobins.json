@@ -8,8 +8,8 @@
     },
     "guid": {
       "exploitable": true,
-      "risk": "Can be abused to read/write files with group privileges",
-      "command": "find . -exec /bin/sh -p \\; -quit",
+      "risk": "Can execute commands with elevated group privileges",
+      "command": "find . -exec /bin/sh \\; -quit",
       "reference": "https://gtfobins.github.io/gtfobins/find/"
     }
   },

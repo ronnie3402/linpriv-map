@@ -39,7 +39,7 @@ def run() -> list:
         "Software": [f"{s}: {v}" for s, v in installed.items()]
     })
 
-    print_high("Search These Versions for Known CVEs", {
+    print_info("Search These Versions for Known CVEs", {
         "Next Step": [
             "Google: <software> <version> privilege escalation exploit",
             "Check: https://exploit-db.com",
@@ -48,4 +48,4 @@ def run() -> list:
         "Reference": "https://exploit-db.com"
     })
 
-    return [{"vector": vectors.VULN_SOFTWARE, "severity": "HIGH", "count": len(installed)}]
+    return [{"vector": vectors.VULN_SOFTWARE, "severity": "INFO", "count": len(installed)}]
