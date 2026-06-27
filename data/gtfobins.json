@@ -379,10 +379,10 @@
   },
   "mount": {
     "suid": {
-      "exploitable": true,
-      "risk": "Can mount filesystems and access sensitive data",
-      "command": "mount /dev/sda1 /mnt then access sensitive files",
-      "reference": "https://gtfobins.github.io/gtfobins/mount/"
+      "exploitable": false,
+      "risk": "SUID is expected and required for mounting filesystems",
+      "command": null,
+      "reference": null
     },
     "guid": {
       "exploitable": false,
@@ -397,6 +397,20 @@
       "risk": "Can execute OS commands via os.execute()",
       "command": "lua -e 'os.execute(\"/bin/sh\")'",
       "reference": "https://gtfobins.github.io/gtfobins/lua/"
+    },
+    "guid": {
+      "exploitable": false,
+      "risk": null,
+      "command": null,
+      "reference": null
+    }
+  },
+  "pkexec": {
+    "suid": {
+      "exploitable": true,
+      "risk": "CVE-2021-4034 PwnKit — Local Privilege Escalation in all polkit versions",
+      "command": "Download PoC: https://github.com/berdav/CVE-2021-4034",
+      "reference": "https://gtfobins.github.io/gtfobins/pkexec/"
     },
     "guid": {
       "exploitable": false,
