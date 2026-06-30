@@ -65,7 +65,7 @@ def _check_suid() -> list:
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
 
     if not binaries:
-        print_not_found("SGID Binaries", {
+        print_not_found("SUID Binaries", {
             "Checked": "find / -perm -4000 -type f",
             "Result" : "No SUID binaries found"
         })
@@ -143,7 +143,7 @@ def _check_suid() -> list:
         print_info("SUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
-        print_not_found("SGID Binaries", {
+        print_not_found("SUID Binaries", {
             "Checked": "find / -perm -4000 -type f",
             "Result" : "No SUID binaries found"
         })
@@ -154,7 +154,7 @@ def _check_suid() -> list:
 
 
 # ─────────────────────────────────────────────
-# SGID Check
+# GUID Check
 # ─────────────────────────────────────────────
 
 def _check_guid() -> list:
@@ -162,11 +162,11 @@ def _check_guid() -> list:
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
 
     if not binaries:
-        print_not_found("SGID Binaries", {
+        print_not_found("GUID Binaries", {
             "Checked": "find / -perm -2000 -type f",
             "Result" : "No GUID binaries found"
         })
-        return [{"vector": "SGID Binaries", "severity": "CLEAN", "count": 0}]
+        return [{"vector": "GUID Binaries", "severity": "CLEAN", "count": 0}]
 
     exploitable = []
     normal      = []
@@ -178,7 +178,7 @@ def _check_guid() -> list:
         # Expected path check — agar expected path par hai toh normal
         if binary_name in EXPECTED_PATHS:
             if binary == EXPECTED_PATHS[binary_name]:
-                normal.append(f"{binary}  (expected SGID — not exploitable)")
+                normal.append(f"{binary}  (expected GUID — not exploitable)")
                 continue
             else:
                 # Unexpected path par mila — CRITICAL
@@ -199,7 +199,7 @@ def _check_guid() -> list:
             exploitable.append(binary)
             hints[binary] = info
         else:
-            normal.append(f"{binary}  (expected SGID — not exploitable)")
+            normal.append(f"{binary}  (expected GUID — not exploitable)")
 
     if exploitable:
         print_critical("GUID Binaries Found", {
@@ -239,14 +239,14 @@ def _check_guid() -> list:
         print_info("GUID Binaries (Not Exploitable / Unverified)", fields)
 
     if not exploitable and not normal:
-        print_not_found("SGID Binaries", {
+        print_not_found("GUID Binaries", {
             "Checked": "find / -perm -2000 -type f",
             "Result" : "No GUID binaries found"
         })
 
     count    = len(exploitable)
     severity = "CRITICAL" if count > 0 else "CLEAN"
-    return [{"vector": "SGID Binaries", "severity": severity, "count": count}]
+    return [{"vector": "GUID Binaries", "severity": severity, "count": count}]
 
 
 # ─────────────────────────────────────────────
