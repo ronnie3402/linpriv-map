@@ -41,6 +41,14 @@ EXPECTED_PATHS = {
     "vmware-user-suid-wrapper"  : "/usr/bin/vmware-user-suid-wrapper"
 }
 
+# File ke top par, EXPECTED_PATHS ke baad add karo
+SKIP_PATH_PREFIXES = [
+    "/var/lib/docker/",
+    "/var/lib/containerd/",
+    "/snap/",
+    "/var/lib/flatpak/",
+]
+
 def run() -> list:
     """
     SUID, GUID aur Sticky Bit misconfigurations check karta hai.
@@ -63,6 +71,12 @@ def run() -> list:
 def _check_suid() -> list:
     raw = run_command("find / -perm -4000 -type f 2>/dev/null")
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
+
+    # NAYA — Docker/container overlay paths skip karo
+    binaries = [
+        b for b in binaries
+        if not any(b.startswith(prefix) for prefix in SKIP_PATH_PREFIXES)
+    ]
 
     if not binaries:
         print_not_found("SUID Binaries", {
@@ -160,6 +174,12 @@ def _check_suid() -> list:
 def _check_guid() -> list:
     raw = run_command("find / -perm -2000 -type f 2>/dev/null")
     binaries = [b.strip() for b in raw.splitlines() if b.strip()]
+
+     # NAYA
+    binaries = [
+        b for b in binaries
+        if not any(b.startswith(prefix) for prefix in SKIP_PATH_PREFIXES)
+    ]
 
     if not binaries:
         print_not_found("GUID Binaries", {
@@ -260,6 +280,12 @@ def _check_sticky_bit() -> list:
     """
     raw = run_command("find / -type d -perm -0002 ! -perm -1000 2>/dev/null")
     dirs = [d.strip() for d in raw.splitlines() if d.strip()]
+
+    # NAYA
+    dirs = [
+        d for d in dirs
+        if not any(d.startswith(prefix) for prefix in SKIP_PATH_PREFIXES)
+    ]
 
     if not dirs:
         print_not_found("Sticky Bit Misconfiguration", {
