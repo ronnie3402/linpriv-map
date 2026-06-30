@@ -87,35 +87,53 @@ def print_summary(results: list):
     print(f"{Fore.CYAN + Style.BRIGHT}  SCAN SUMMARY{Style.RESET_ALL}")
     print(f"{Fore.CYAN + Style.BRIGHT}{'═' * 60}{Style.RESET_ALL}")
 
-    critical_count = 0
-    high_count = 0
+    critical_vectors  = 0
+    critical_findings = 0
+    high_vectors       = 0
+    high_findings       = 0
 
     for r in results:
-        severity = r.get("severity", "CLEAN")
+        severity = str(r.get("severity", "CLEAN")).upper()
         vector   = r.get("vector", "Unknown")
-        count    = r.get("count", 0)
+        count    = int(r.get("count", 0) or 0)
 
         if severity == "CRITICAL":
-            critical_count += count
+            critical_vectors += 1
+            critical_findings += count
             tag = f"{Fore.RED + Style.BRIGHT}[CRITICAL]{Style.RESET_ALL}"
         elif severity == "HIGH":
-            high_count += count
+            high_vectors += 1
+            high_findings += count
             tag = f"{Fore.YELLOW + Style.BRIGHT}[HIGH]    {Style.RESET_ALL}"
         elif severity == "INFO":
             tag = f"{Fore.CYAN}[INFO]    {Style.RESET_ALL}"
-        else:
+        elif severity == "CLEAN":
             tag = f"{Style.DIM}[CLEAN]   {Style.RESET_ALL}"
+        else:
+            tag = f"{Fore.MAGENTA}[UNKNOWN] {Style.RESET_ALL}"
 
-        count_str = f"({count} finding{'s' if count != 1 else ''})" if count > 0 else ""
-        print(f"  {tag} {vector} {Fore.WHITE}{count_str}{Style.RESET_ALL}")
+        # Sirf CRITICAL/HIGH ke liye count dikhao — INFO/CLEAN ke liye nahi
+        count_str = ""
+        if severity in ("CRITICAL", "HIGH") and count > 0:
+            count_str = f"({count})"
+
+        print(f"  {tag} {vector:<28} {Fore.WHITE}{count_str}{Style.RESET_ALL}")
 
     print(f"{Fore.CYAN + Style.BRIGHT}{'─' * 60}{Style.RESET_ALL}")
 
-    if critical_count > 0:
-        print(f"  {Fore.RED + Style.BRIGHT}[!] {critical_count} CRITICAL vector(s) found — prioritize these!{Style.RESET_ALL}")
-    if high_count > 0:
-        print(f"  {Fore.YELLOW + Style.BRIGHT}[!] {high_count} HIGH vector(s) found — worth investigating.{Style.RESET_ALL}")
-    if critical_count == 0 and high_count == 0:
+    if critical_vectors > 0:
+        plural_v = "vector" if critical_vectors == 1 else "vectors"
+        plural_f = "finding" if critical_findings == 1 else "findings"
+        print(f"  {Fore.RED + Style.BRIGHT}[!] {critical_vectors} CRITICAL {plural_v} "
+              f"({critical_findings} {plural_f}) — prioritize these!{Style.RESET_ALL}")
+
+    if high_vectors > 0:
+        plural_v = "vector" if high_vectors == 1 else "vectors"
+        plural_f = "finding" if high_findings == 1 else "findings"
+        print(f"  {Fore.YELLOW + Style.BRIGHT}[!] {high_vectors} HIGH {plural_v} "
+              f"({high_findings} {plural_f}) — worth investigating.{Style.RESET_ALL}")
+
+    if critical_vectors == 0 and high_vectors == 0:
         print(f"  {Fore.GREEN + Style.BRIGHT}[+] No critical or high severity vectors found.{Style.RESET_ALL}")
 
     print(f"{Fore.CYAN + Style.BRIGHT}{'═' * 60}{Style.RESET_ALL}\n")
