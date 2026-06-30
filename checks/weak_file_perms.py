@@ -77,12 +77,15 @@ def _check_critical_files() -> list:
             "Reference": "https://book.hacktricks.xyz/linux-hardening/privilege-escalation"
         })
 
-    if not writable_critical and not readable_critical:
-        return []
+    results = []
 
-    count    = len(writable_critical) + len(readable_critical)
-    severity = "CRITICAL" if writable_critical else "HIGH"
-    return [{"vector": "Critical File Perms", "severity": severity, "count": count}]
+    if writable_critical:
+        results.append({"vector": "Writable Critical Files", "severity": "CRITICAL", "count": len(writable_critical)})
+
+    if readable_critical:
+        results.append({"vector": "Readable Restricted Files", "severity": "HIGH", "count": len(readable_critical)})
+
+    return results
 
 
 # ─────────────────────────────────────────────

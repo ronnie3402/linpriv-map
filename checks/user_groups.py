@@ -114,6 +114,10 @@ def run() -> list:
         })
         return [{"vector": vectors.USER_GROUPS, "severity": "CLEAN", "count": 0}]
 
-    count    = len(critical_found) + len(high_found)
-    severity = "CRITICAL" if critical_found else "HIGH"
-    return [{"vector": vectors.USER_GROUPS, "severity": severity, "count": count}]
+    results = []
+    if critical_found:
+        results.append({"vector": "Dangerous Groups", "severity": "CRITICAL", "count": len(critical_found)})
+    if high_found:
+        results.append({"vector": "Sensitive Groups", "severity": "HIGH", "count": len(high_found)})
+
+    return results

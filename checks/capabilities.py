@@ -244,32 +244,22 @@ def run() -> list:
 
     
     # Return highest severity
+    # NAYA — alag results return karo
+    results = []
+
     if dangerous_found:
-        severity = "CRITICAL"
-        count = (
-            len(dangerous_found)
-            + len(high_found)
-            + len(moderate_found)
-        )
+        results.append({"vector": "Dangerous Capabilities", "severity": "CRITICAL", "count": len(dangerous_found)})
 
-    elif high_found:
-        severity = "HIGH"
-        count = len(high_found)
+    if high_found:
+        results.append({"vector": "GTFOBins Capable Binaries", "severity": "HIGH", "count": len(high_found)})
 
-    elif moderate_found:
-        severity = "HIGH"
-        count = len(moderate_found)
+    if moderate_found:
+        results.append({"vector": "Moderate Capabilities", "severity": "HIGH", "count": len(moderate_found)})
 
-    elif info_found:
-        severity = "INFO"
-        count = len(info_found)
+    if info_found:
+        results.append({"vector": "Other Capabilities", "severity": "INFO", "count": len(info_found)})
 
-    else:
-        severity = "CLEAN"
-        count = 0
+    if not results:
+        return [{"vector": vectors.CAPABILITIES, "severity": "CLEAN", "count": 0}]
 
-    return [{
-        "vector": vectors.CAPABILITIES,
-        "severity": severity,
-        "count": count
-    }]
+    return results
